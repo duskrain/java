@@ -1,0 +1,91 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
+public class out {
+    //天气种类有小雨，多云，阴，晴。
+    //画面有阴，晴，多云
+
+    public static String txt(File file){
+        StringBuilder result = new StringBuilder();
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
+            String s = null;
+            while((s = br.readLine())!=null){//使用readLine方法，一次读一行
+                result.append(System.lineSeparator()+s);
+            }
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result.toString();
+    }
+
+    public static void main(String[] args){
+        int type[]=new int[5];//0为多云和其他天气，1为雨和阴，3为晴
+        File file = new File("C:\\Users\\sea\\Desktop\\output\\src\\weather.txt");
+        String show =txt(file);
+        show.trim();//去除开头和结尾空格
+        char my =show.charAt(1);//2为城市名第一个字,1和天气之前相等
+        int here;
+        for(int i=4;;i++){
+           if(my==show.charAt(i)){
+               here=i+1;
+               break;
+           }
+        }
+        String cut=show.substring(here);
+       // System.out.println(cut);
+        int x=cut.length();//为数组末尾
+        int arr[]=new int[4];
+        int k=0;
+        for(int i=0;i<x;i++){
+           char jurge=cut.charAt(i);
+           if(jurge==my){
+               arr[k]=i;
+               k++;
+           }
+        }
+        String wea[]=new String[5];//wea对应天气
+        wea[0]=cut.substring(0,arr[0]-1);
+       //System.out.println(wea[0]);
+        wea[1]=cut.substring(arr[0]+1,arr[1]-1);
+        //System.out.println(wea[1]);
+        wea[2]=cut.substring(arr[1]+1,arr[2]-1);
+        //System.out.println(wea[2]);
+        wea[3]=cut.substring(arr[2]+1,arr[3]-1);
+       // System.out.println(wea[3]);
+        wea[4]=cut.substring(arr[3]+1,x);
+        //System.out.println(wea[4]);
+        char s1='晴';
+        char s2='阴';
+        char s3='雨';
+
+
+        for(int i=0;i<5;i++){//0为多云和其他天气，1为雨和阴，2为晴
+            int y=wea[i].length();
+            type[i]=0;
+            for(int j=0;j<y;j++){
+                char c=wea[i].charAt(j);
+                if(c==s3){
+                    type[i]=1;
+                    break;
+                }
+                else if(c==s2){
+                    type[i]=1;
+                    break;
+                }
+                else if(c==s1){
+                    type[i]=2;
+                    break;
+                }
+            }
+            //System.out.println(type[i]);
+        }
+
+        //System.out.print(x);
+        //System.out.print(my);
+       // System.out.println(cut);
+
+    }
+}
+
